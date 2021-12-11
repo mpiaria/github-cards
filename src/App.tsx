@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC, useState } from "react";
+import CardList from "./components/CardList";
+import Form from "./components/Form";
+import ProfileProps from "./types/ProfileProps";
 
-function App() {
+const App: FC = () => {
+  const [profiles, setProfiles] = useState<ProfileProps[]>();
+  const addCard = (profile: ProfileProps) => {
+    setProfiles(
+      Array.of(profile)
+        .concat(profiles ? profiles : [])
+        .sort((left, right) => left?.name?.localeCompare(right?.name))
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="header">The GitHub Cards App</div>
+      <Form addCardHandler={addCard} />
+      <CardList profiles={profiles} />
     </div>
   );
-}
+};
 
 export default App;
